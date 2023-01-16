@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using Dwapi.Crs.SharedKernel.Model;
+using Dwapi.Crs.SharedKernel.Utils;
 
 namespace Dwapi.Crs.Service.Application.Domain
 {
@@ -26,8 +27,13 @@ namespace Dwapi.Crs.Service.Application.Domain
         public static TransmissionLog New(Registry registry, HttpStatusCode response, string responseInfo,
             Guid registryManifestId)
         {
+            var resp = Generate(response);
+
+            if (resp == Response.Sent)
+                responseInfo = string.Empty;
+
             var trl = new TransmissionLog(
-                registry, Generate(response), responseInfo, registryManifestId
+                registry, resp, responseInfo, registryManifestId
             );
             return trl;
         }
